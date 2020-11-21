@@ -1,0 +1,345 @@
+NAME: Registration  
+PURPOSE: To create new user account
+INPUT: Username, password, Type of user, id number, Department
+OUTPUT: Acknowledgement of successful creation of account
+PROCEDURE:
+BEGIN
+    Read Username, password, Type of user, id number, Department
+    switch ( type of user)
+        case student 
+            If user does not exist in student store
+                If <Username, id number, Department> Verified by college database verification API Successfully
+                    Write <Username, password, Type of user, id number, Department> to student store
+                else 
+                    Write("Student not registered in college")
+            else
+                Write("Student Already Exist")
+        case Faculty 
+            If user does not exist in faculty store
+                If <Username, id number, Department> Verified by college database verification API Successfully
+                    Write <Username, password, Type of user, id number, Department> to faculty store
+                else 
+                    Write("faculty not registered in college")
+            else
+                Write("faculty Already Exist")
+        case administrator 
+            If user does not exist in Administrator store
+                if Administrator exist for given department
+                    Write("Administrator for this department already exist")
+                    exit
+                If <Username, id number, Department> Verified by college database verification API Successfully
+                    Write <Username, password, Type of user, id number, Department> to Administrator store
+                else 
+                    Write("Administrator not registered in college")
+            else
+                Write("Administrator Already Exist")
+END
+
+NAME: Login
+PURPOSE: To let user enter in the system 
+INPUT: Username, type of user, password
+OUTPUT: Acknowledgement
+PROCEDURE:
+BEGIN
+    switch(type of user)
+        case student
+            if <Username, type of user, password> exist in student store
+                Write("Successfully logged in")
+            else
+                Write("Username or password is incorrect")
+        case Faculty
+            if <Username, type of user, password> exist in Faculty store
+                Write("Successfully logged in")
+            else
+                Write("Username or password is incorrect")
+        case Administrator
+            if <Username, type of user, password> exist in Administrator store
+                Write("Successfully logged in")
+            else
+                Write("Username or password is incorrect")
+END
+
+NAME: Add special event
+PURPOSE: To add special event for railway station bus service
+INPUT: special event details 
+OUTPUT: Acknowledgement 
+PROCEDURE: 
+BEGIN
+    read special event information
+    if event not exist
+        write event  details in special event table 
+    else 
+        Write("Event already exist")
+END
+
+
+NAME: Update special event
+PURPOSE: To Update special event for railway station bus service
+INPUT: Updated information with event code 
+OUTPUT: Acknowledgement 
+PROCEDURE: 
+BEGIN
+    read event code, Updated information
+    if event exist
+        write updated details in special event table where event_code = event code  
+    else 
+        Write("Event does not exist")
+END
+
+
+NAME: delete special event
+PURPOSE: To delete special event for railway station bus service
+INPUT:  event code 
+OUTPUT: Acknowledgement 
+PROCEDURE: 
+BEGIN
+    read event code
+    get confirmation
+    if not confirmed
+        exit
+    if event exist
+        remove event details from special event table where event_code = event code  
+    else 
+        Write("Event does not exist")
+END
+
+
+NAME: View special Event
+PURPOSE: To see all special events
+INPUT: -
+OUTPUT: List of special events
+PROCEDURE:
+BEGIN
+    Read events from special event table
+    Display events
+END
+
+NAME: Booking
+PURPOSE: To book bus for conferences
+INPUT: Booking details
+OUTPUT: Acknowledgement
+PROCEDURE: 
+BEGIN
+    Read booking details 
+    write booking details in booking store
+END
+
+NAME: Cancel booking
+PURPOSE: To cancel the booking 
+INPUT: faculty id, date
+OUTPUT: Acknowledgement
+PROCEDURE:
+BEGIN
+    Read booking id
+    Get confirmation
+    if not confirmed
+        exit
+    else  
+        Remove booking from booking store where faculty_id = faculty id and date = date
+        Write("Successfully canceled booking") 
+END
+
+NAME: View booking Request
+PURPOSE: To view all the booking request made by users
+INPUT: type_of_admin
+OUTPUT: List of booking requests
+PROCEDURE: 
+BEGIN
+    Read all the booking requests from booking store which belong to the same department as administrator 
+    Display the booking requests
+END
+
+ NAME: Approve/Reject booking
+ PURPOSE: To Approve or reject booking request
+ INPUT: Faculty id, Booking details(optional), approval status
+ OUTPUT: Acknowledgement
+ PROCEDURE:
+ BEGIN
+    Read booking details, approval status
+    If booking is approved 
+        call send message(Faculty id,"Your request has been approved" + Booking details)
+    else 
+        call send message(Faculty id,"Your request has been rejected" + Booking details)
+ END
+
+NAME: Send message    
+PURPOSE: To send message and add it message store
+INPUT: message, recipient id, type of user
+OUTPUT: Acknowledgement
+PROCEDURE: 
+BEGIN
+    If type of user is student
+        add the details to student_message store
+    else 
+        add the details to faculty_message store
+END
+
+NAME: Notify message
+PURPOSE:To view message 
+INPUT: User id,Type of user
+OUTPUT: List of messages
+PROCEDURE:
+BEGIN
+    If type of user is student
+        read messages from student_message store where student id = User id 
+    else 
+        read messages from Faculty_message store where faculty id = User id
+END
+
+NAME: Create Feedback/complaint
+PURPOSE:To register complaint or Give Feedback
+INPUT: Feedback/complaint, type of user, user id
+OUTPUT: Acknowledgement
+PROCEDURE:
+BEGIN
+    Read Feedback/complaint, type of user, user id
+    if type of user is student
+        write Feedback/complaint in student_complaint store
+    else 
+        write Feedback/complaint in faculty_complaint store
+END
+
+NAME: Mark complain
+PURPOSE: To notify the concerned user that complaint has been seen 
+INPUT: User id, type of user and date 
+OUTPUT: Acknowledgement
+PROCEDURE:
+BEGIN
+    If type of user is student
+        update complaint status as seen in student_complaint store
+        call Create Message(User id, type of user, "Your complaint has been noted")
+    else 
+        update complaint status as seen in faculty_complaint store
+        call Create Message(User id, type of user, "Your complaint has been noted")
+END
+
+
+
+
+
+
+
+
+
+
+
+
+NAME : query1
+PURPOSE: To get the route information
+INPUT: start stop, end stop
+OUTPUT: Description of route from start to end stop
+
+PROCEDURE: 
+
+BEGIN
+    read start stop, end stop
+
+END
+
+
+
+NAME : query2
+PURPOSE: To get all the routes which include the bus stop
+INPUT: Bus stop information
+OUTPUT: Link to the routes 
+
+PROCEDURE:
+BEGIN
+    read Bid 
+    read route id from data store route-stop where Bus stop id = Bid 
+    display links for each route id 
+END
+
+NAME: query3
+PURPOSE: To get the route information
+INPUT: Route number
+OUTPUT: Route information
+
+PROCEDURE:
+BEGIN
+    Read route number
+    Read route information from route, route-stop, bus data store where RouteId = Route number
+    Display route information
+END
+
+
+
+NAME: Add Route
+PURPOSE: To add new route in the system
+INPUT: Route information
+OUTPUT: Acknowledgement of added route
+PROCEDURE:
+BEGIN
+    Read Route information, Bus information
+    if route does not exist
+        Write To route, route-stop and bus stop store
+        Write("Successfully added new route")
+    else
+        Write("Route already exist")
+END
+
+
+NAME: Update route
+PURPOSE: To update the existing route
+INPUT: Route information with route id
+OUTPUT: Acknowledgement of updated route
+PROCEDURE:
+BEGIN
+    Read Route information
+    if Route exist
+        Write updated information to route, route-stop, bus stop data store
+    else 
+        Write("Route does not exist")
+END
+
+NAME: delete route
+PURPOSE: To delete the existing route
+INPUT:  Route id
+OUTPUT: Acknowledgement of  Deleted route
+PROCEDURE:
+BEGIN
+    Read Route id
+    get confirmation
+    if not confirmed 
+        exit
+    if Route exist
+        Remove route from route, route-stop, bus stop data store
+    else 
+        Write("Route does not exist")
+END
+
+NAME: QUERY
+PURPOSE: This will allow user to ask different query and get the result
+INPUT: Query type, Route number/(start stop, end stop)/bus stop name or number
+OUTPUT: List showing all the bus stops on the route/ list showing all the stops between start and end station including timing of buses/ list of routes which includes that bus stop including timing of buses at the stop
+
+PROCEDURE:
+
+BEGIN
+    read query type
+    switch (query type)
+        case get route:
+            call query3(route number)
+        case find route
+            call query1(start stop, end stop)
+        case get route by bus stop or number
+            call query2(bus stop information)
+END 
+
+
+NAME: Route add/update/delete
+PURPOSE: This will allow administrator to add new routes, update existing route, delete existing route
+INPUT: Type of operation, Route number with bus stops on route/ Route number which have to update or delete
+
+PROCEDURE:
+
+BEGIN
+    Read type of operation
+    switch (opearation)
+        case add
+            call addRoute(route information)
+        case delete
+            call deleteRoute(route identifier) 
+        case update
+            call updateRoute(route information)
+END
